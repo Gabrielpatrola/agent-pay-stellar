@@ -1,0 +1,55 @@
+{
+  "name": "agent-pay-stellar",
+  "version": "0.2.0",
+  "description": "Pay Stellar x402-gated URLs from agents, scripts, and the terminal",
+  "type": "module",
+  "license": "Apache-2.0",
+  "bin": {
+    "agent-pay-stellar": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts src/cli.ts --format esm --dts --clean",
+    "check": "tsc --noEmit",
+    "test": "npm run build && vitest run",
+    "evidence": "npm run build && node scripts/evidence.mjs",
+    "prepack": "npm run build"
+  },
+  "keywords": [
+    "stellar",
+    "x402",
+    "cli",
+    "agent",
+    "payments",
+    "usdc"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@stellar/stellar-sdk": "^16.0.1",
+    "@x402/core": "^2.20.0",
+    "@x402/fetch": "^2.20.0",
+    "@x402/stellar": "^2.20.0",
+    "commander": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}
