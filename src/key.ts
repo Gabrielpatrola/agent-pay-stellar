@@ -26,7 +26,7 @@ function wrap(value: string, source: string, fromCommandLine: boolean): Resolved
 export async function keyFromStellarCli(name: string): Promise<ResolvedKey> {
   if (!/^[A-Za-z0-9._-]{1,64}$/.test(name)) throw new AgentPayError("bad_key", "Invalid Stellar identity name");
   try {
-    const { stdout } = await run("stellar", ["keys", "show", name], { timeout: 15_000, maxBuffer: 65_536 });
+    const { stdout } = await run("stellar", ["keys", "secret", name], { timeout: 15_000, maxBuffer: 65_536 });
     return wrap(stdout.trim().split("\n").at(-1) ?? "", `stellar-cli identity "${name}"`, false);
   } catch (error) {
     const value = error as { code?: string; stderr?: string; message?: string };

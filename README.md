@@ -35,6 +35,31 @@ npm run build
 npm link
 ```
 
+## Wallet prerequisite
+
+Paying requires a Stellar CLI identity with a trustline and balance for the requested asset. For testnet USDC:
+
+```bash
+# Install Stellar CLI on macOS/Linux (Homebrew)
+brew install stellar-cli
+
+# Create a testnet payer and fund it with testnet XLM
+stellar keys generate agent-payer --network testnet --fund --secure-store
+
+# Add the Circle testnet USDC trustline
+stellar tx new change-trust \
+  --source-account agent-payer \
+  --network testnet \
+  --line USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5
+
+# Print the public address to fund with testnet USDC
+stellar keys public-key agent-payer
+```
+
+Fund that address through the [Circle testnet faucet](https://faucet.circle.com/), selecting Stellar testnet. Then pass the identity as `--key agent-payer`. The `--fund` command supplies testnet XLM only; it does not supply USDC. Never publish the output of `stellar keys secret agent-payer`.
+
+> **Payment prerequisite:** Friendbot and `stellar keys generate --fund` provide testnet XLM only. Before an x402 USDC payment can succeed, the payer must have both a USDC trustline and enough testnet USDC to cover the quoted amount. The recipient (`payTo`) must also have a USDC trustline. If the payer has no USDC, simulation fails with `resulting balance is not within the allowed range`; if the recipient lacks a trustline, settlement can fail with `op_no_trust`. Use the Circle testnet faucet to fund the payer after creating its trustline.
+
 ## Inspect before paying
 
 `inspect` makes one unpaid request, decodes the challenge, evaluates the default spending cap, and stops. It never reads a key or creates a signer.

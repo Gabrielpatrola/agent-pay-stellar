@@ -1,6 +1,6 @@
 {
   "name": "agent-pay-stellar",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Pay Stellar x402-gated URLs from agents, scripts, and the terminal",
   "author": "Gabriel Almeida <gabriel@patrola.tech>",
   "type": "module",
