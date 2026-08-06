@@ -1,5 +1,10 @@
 # agent-pay-stellar
 
+[![npm version](https://img.shields.io/npm/v/agent-pay-stellar?color=7c3aed&logo=npm)](https://www.npmjs.com/package/agent-pay-stellar)
+[![npm downloads](https://img.shields.io/npm/dm/agent-pay-stellar?color=06b6d4)](https://www.npmjs.com/package/agent-pay-stellar)
+[![CI](https://github.com/Gabrielpatrola/agent-pay-stellar/actions/workflows/ci.yml/badge.svg)](https://github.com/Gabrielpatrola/agent-pay-stellar/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/agent-pay-stellar?color=22c55e)](./LICENSE)
+
 An installable CLI and TypeScript library that lets agents and shell workflows inspect and pay Stellar x402-gated URLs.
 
 ```text
@@ -194,6 +199,18 @@ npm pack --dry-run
 ```
 
 The suite includes unit and executable-level tests for amount boundaries, hostile decimal metadata, default caps, network/asset/recipient policies, non-interactive refusal, redirect isolation, request semantics, timeouts, JSON output, and secret leakage. `npm run evidence` produces a timestamped, reproducible proof summary from a local protocol-encoded x402 paywall.
+
+## Automated releases
+
+Pushes to `main` run tests and type checking before Semantic Release evaluates the commits. Conventional commits automatically control the next version and publish both an npm package and GitHub Release:
+
+```text
+fix: correct redirect handling       -> patch release
+feat: add cumulative budget policy   -> minor release
+feat!: change the JSON contract      -> major release
+```
+
+npm publishing uses GitHub Actions trusted publishing with OIDC. Configure `Gabrielpatrola/agent-pay-stellar` and `.github/workflows/publish.yml` as a trusted publisher for the `agent-pay-stellar` package on npm; no `NPM_TOKEN` repository secret is required.
 
 ## License
 

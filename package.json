@@ -2,8 +2,18 @@
   "name": "agent-pay-stellar",
   "version": "0.2.0",
   "description": "Pay Stellar x402-gated URLs from agents, scripts, and the terminal",
+  "author": "Gabriel Almeida <gabriel@patrola.tech>",
   "type": "module",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/Gabrielpatrola/agent-pay-stellar",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabrielpatrola/agent-pay-stellar.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "bin": {
     "agent-pay-stellar": "./dist/cli.js"
   },
