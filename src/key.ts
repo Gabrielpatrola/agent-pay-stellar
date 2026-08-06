@@ -30,7 +30,15 @@ export async function keyFromStellarCli(name: string): Promise<ResolvedKey> {
     return wrap(stdout.trim().split("\n").at(-1) ?? "", `stellar-cli identity "${name}"`, false);
   } catch (error) {
     const value = error as { code?: string; stderr?: string; message?: string };
-    const detail = redact(String(value.stderr ?? value.message ?? "")).trim().split("\n")[0];
+    const detail = redact(String(value.stderr ?? value.message ?? "")).trim().split("\n")[0] ?? "";
+    if (detail.includes("Secure Store does not reveal secret key")) {
+      throw new AgentPayError(
+        "bad_key",
+        `Stellar identity "${name}" is stored in Secure Store, which cannot export the raw secret ` +
+          "required by the x402 signer. Create a dedicated identity without --secure-store, or set " +
+          "AGENT_PAY_STELLAR_SECRET to a dedicated low-balance payer key.",
+      );
+    }
     throw new AgentPayError("bad_key", value.code === "ENOENT"
       ? "The stellar CLI is not installed; use a secret environment variable"
       : `Could not read Stellar identity "${name}"${detail ? `: ${detail}` : ""}`);

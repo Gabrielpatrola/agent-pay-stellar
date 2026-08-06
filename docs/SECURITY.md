@@ -43,7 +43,9 @@ Redirects are handled manually. Same-origin redirects are bounded; cross-origin 
 
 ### Key handling
 
-The recommended source is a Stellar CLI identity. Environment variables are supported for automation. Passing a literal seed through `--key` is supported for compatibility but generates a warning because command arguments may appear in shell history and process listings.
+The recommended source is a dedicated, low-balance, file-backed Stellar CLI identity. Environment variables are supported for automation. Passing a literal seed through `--key` is supported for compatibility but generates a warning because command arguments may appear in shell history and process listings.
+
+Stellar Secure Store identities are not currently supported. Secure Store deliberately refuses to reveal the secret, while `@x402/stellar` requires the raw secret to create an Ed25519 signer for contract authorization entries. Do not work around this limitation with a treasury wallet; create a separate payer containing only the funds the agent needs.
 
 Secret values are wrapped in a type that redacts string, JSON, and inspection output. Every CLI error and JSON envelope is redacted again before being written.
 

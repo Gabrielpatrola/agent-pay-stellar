@@ -43,8 +43,8 @@ Paying requires a Stellar CLI identity with a trustline and balance for the requ
 # Install Stellar CLI on macOS/Linux (Homebrew)
 brew install stellar-cli
 
-# Create a testnet payer and fund it with testnet XLM
-stellar keys generate agent-payer --network testnet --fund --secure-store
+# Create a dedicated file-backed testnet payer and fund it with testnet XLM
+stellar keys generate agent-payer --network testnet --fund
 
 # Add the Circle testnet USDC trustline
 stellar tx new change-trust \
@@ -57,6 +57,8 @@ stellar keys public-key agent-payer
 ```
 
 Fund that address through the [Circle testnet faucet](https://faucet.circle.com/), selecting Stellar testnet. Then pass the identity as `--key agent-payer`. The `--fund` command supplies testnet XLM only; it does not supply USDC. Never publish the output of `stellar keys secret agent-payer`.
+
+> **Secure Store limitation:** do not create the payer with `--secure-store`. Stellar Secure Store intentionally does not reveal secret keys, but the current `@x402/stellar` signer requires the raw `S...` key to sign contract authorization entries. Use a dedicated, low-balance, file-backed Stellar CLI identity for this tool. Never reuse a treasury or high-value wallet.
 
 > **Payment prerequisite:** Friendbot and `stellar keys generate --fund` provide testnet XLM only. Before an x402 USDC payment can succeed, the payer must have both a USDC trustline and enough testnet USDC to cover the quoted amount. The recipient (`payTo`) must also have a USDC trustline. If the payer has no USDC, simulation fails with `resulting balance is not within the allowed range`; if the recipient lacks a trustline, settlement can fail with `op_no_trust`. Use the Circle testnet faucet to fund the payer after creating its trustline.
 
@@ -102,7 +104,7 @@ agent-pay-stellar fetch "$URL" \
 
 Without `--yes`, a process without an interactive terminal refuses the payment.
 
-Secrets may alternatively be supplied through `AGENT_PAY_STELLAR_SECRET`, `STELLAR_PRIVATE_KEY`, or `STELLAR_SECRET_KEY`. A Stellar CLI identity is safer because the secret does not enter command history or the process arguments.
+Secrets may alternatively be supplied through `AGENT_PAY_STELLAR_SECRET`, `STELLAR_PRIVATE_KEY`, or `STELLAR_SECRET_KEY`. A dedicated file-backed Stellar CLI identity avoids placing the secret in command history or process arguments. Secure Store identities are not supported because their secrets cannot be exported to the x402 signer.
 
 ## POST and custom requests
 

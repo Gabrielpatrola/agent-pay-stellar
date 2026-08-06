@@ -42,7 +42,7 @@ const program = new Command().name("agent-pay-stellar")
 addCommon(program.command("inspect <url>").description("Decode a 402 challenge without reading a key or signing"))
   .action((url: string, flags: CommonFlags) => runInspect(url, flags));
 addCommon(program.command("fetch <url>").description("Complete the 402 -> pay -> unlock loop"))
-  .option("--key <identity>", "stellar-cli identity name (recommended), or S-key")
+  .option("--key <identity>", "file-backed stellar-cli identity name (not Secure Store), or S-key")
   .option("-y, --yes", "authorize payment without an interactive prompt")
   .action((url: string, flags: CommonFlags) => runFetch(url, flags));
 
